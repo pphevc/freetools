@@ -1,0 +1,5 @@
+Linux :
+    HeatMap -> prj -> gcc -> make
+    
+Windows :
+	  HeatMap -> prj -> vs13 -> HeatMap.sln
