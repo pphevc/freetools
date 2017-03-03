@@ -17,7 +17,7 @@ NOTE                : 422, 10bit support could be added later
 
 # Sample Usage :
 ## Linux :
-HeatMap -r reference_input.yuv -o original_input.yuv -w width -h height -f number_of_frames -b block_size  
+HeatMap.obj -r reference_input.yuv -o original_input.yuv -w width -h height -f number_of_frames -b block_size  
 
 ##Windows :
 HeatMap.exe  -r reference_input.yuv -o original_input.yuv -w width -h height -f number_of_frames -b block_size  
