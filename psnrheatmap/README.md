@@ -13,7 +13,7 @@ PlanarYUV
 NOTE                : 422, 10bit support could be added later
 
 # Color Scale :
-![color_scale](https://cloud.githubusercontent.com/assets/25979247/23543191/1be036d2-0017-11e7-8b95-655b97a24106.png)
+![heatscale](https://cloud.githubusercontent.com/assets/25979247/23602975/0ccdb5e8-0279-11e7-9ddd-0f9000422032.png)
 
 # Sample Usage :
 ## Linux :
