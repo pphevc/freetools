@@ -32,15 +32,21 @@
 *****************************************************************************/
 int main(int argc, char *argv[])
 {
+    /*check if no argument is given*/
+    if (argc == 1)
+    {
+      printf("\nSample Use: HeatMap.exe -r Reconstructed_file.yuv -o Original_file.yuv -w inputWidth -h inputHeight -f noOfFrames -b blockSize\n");
+      return 1;
+    }
     char  c_Output[MAX_FILE_NAME] = { '\0' };
     InputParams st_InputParams;
     BufferPointers st_BuffPtrs;
     int i_ImgSize;
 
     /*Parse command line argument*/
-    if (ParseCommandArgs(argc, argv, &st_InputParams) == 0)
+    if (ParseCommandArgs(argc, argv, &st_InputParams) == 1)
     {
-        return 0;
+        return 1;
     }
 
     /*Open Input refrence stream*/
@@ -48,7 +54,7 @@ int main(int argc, char *argv[])
     if (!fp_InputReconstructed)
     {
         printf("Unable to open Reconstructed stream\n");
-        return 0;
+        return 1;
     }
 
     /*Open Input Original stream*/
@@ -56,7 +62,7 @@ int main(int argc, char *argv[])
     if (!fp_InputOriginal)
     {
         printf("Unable to open Original stream\n");
-        return 0;
+        return 1;
     }
 
 
@@ -67,37 +73,37 @@ int main(int argc, char *argv[])
     if (!fp_Output)
     {
         printf("Unable to open Out File\n");
-        return 0;
+        return 1;
     }
     i_ImgSize = st_InputParams.i_ImgHeight*st_InputParams.i_ImgWidth;
 
     /*Memory allocation*/
-    if (BUFFMGR_AllocBuffer(&st_InputParams, &st_BuffPtrs) == 0)
+    if (BUFFMGR_AllocBuffer(&st_InputParams, &st_BuffPtrs) == 1)
     {
         printf("Unable to allocate memory\n");
-        return 0;
+        return 1;
     }
 
     /*Call function to overlay for each frame*/
     for (int frame = 0; frame < st_InputParams.i_NoOfFrames; frame++)
     {
         /*Read Rcon stream*/
-      fread(st_BuffPtrs.uc_Reconstructed_Y, 1 * sizeof(unsigned char), i_ImgSize, fp_InputReconstructed);
-      fread(st_BuffPtrs.uc_Reconstructed_U, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_InputReconstructed);
-      fread(st_BuffPtrs.uc_Reconstructed_V, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_InputReconstructed);
+      fread(st_BuffPtrs.uc_Reconstructed_Y, 1 , i_ImgSize* sizeof(unsigned char), fp_InputReconstructed);
+      fread(st_BuffPtrs.uc_Reconstructed_U, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_InputReconstructed);
+      fread(st_BuffPtrs.uc_Reconstructed_V, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_InputReconstructed);
 
         /*Read Original stream*/
-      fread(st_BuffPtrs.uc_Original_Y, 1 * sizeof(unsigned char), i_ImgSize, fp_InputOriginal);
-      fread(st_BuffPtrs.uc_Original_U, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_InputOriginal);
-      fread(st_BuffPtrs.uc_Original_V, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_InputOriginal);
+      fread(st_BuffPtrs.uc_Original_Y, 1 , i_ImgSize* sizeof(unsigned char), fp_InputOriginal);
+      fread(st_BuffPtrs.uc_Original_U, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_InputOriginal);
+      fread(st_BuffPtrs.uc_Original_V, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_InputOriginal);
 
         /*Calling function to do color overlay*/
         ComputeHeatMap(&st_InputParams, &st_BuffPtrs);
 
         /*Write Overlayed stream to file*/
-        fwrite(st_BuffPtrs.uc_Original_Y, 1 * sizeof(unsigned char), i_ImgSize, fp_Output);
-        fwrite(st_BuffPtrs.uc_Original_U, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_Output);
-        fwrite(st_BuffPtrs.uc_Original_V, 1 * sizeof(unsigned char), i_ImgSize / 4, fp_Output);
+        fwrite(st_BuffPtrs.uc_Original_Y, 1 , i_ImgSize* sizeof(unsigned char), fp_Output);
+        fwrite(st_BuffPtrs.uc_Original_U, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_Output);
+        fwrite(st_BuffPtrs.uc_Original_V, 1 , (i_ImgSize >> 2)* sizeof(unsigned char), fp_Output);
         printf("  Frame %3d\n", frame + 1);
     }
 

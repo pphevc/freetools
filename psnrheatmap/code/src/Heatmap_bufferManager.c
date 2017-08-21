@@ -38,25 +38,25 @@ int BUFFMGR_AllocBuffer(InputParams *st_InputParams, BufferPointers *st_BuffPtrs
 
     st_BuffPtrs->uc_Reconstructed_Y = (unsigned char *)malloc(i_ImgSize*sizeof(unsigned char));
 
-    st_BuffPtrs->uc_Reconstructed_U = (unsigned char *)malloc((i_ImgSize / 4)*sizeof(unsigned char));
+    st_BuffPtrs->uc_Reconstructed_U = (unsigned char *)malloc((i_ImgSize >>2)*sizeof(unsigned char));
 
-    st_BuffPtrs->uc_Reconstructed_V = (unsigned char *)malloc((i_ImgSize / 4)*sizeof(unsigned char));
+    st_BuffPtrs->uc_Reconstructed_V = (unsigned char *)malloc((i_ImgSize >>2)*sizeof(unsigned char));
 
     st_BuffPtrs->uc_Original_Y = (unsigned char *)malloc(i_ImgSize*sizeof(unsigned char));
 
-    st_BuffPtrs->uc_Original_U = (unsigned char *)malloc((i_ImgSize / 4)*sizeof(unsigned char));
+    st_BuffPtrs->uc_Original_U = (unsigned char *)malloc((i_ImgSize >>2)*sizeof(unsigned char));
 
-    st_BuffPtrs->uc_Original_V = (unsigned char *)malloc((i_ImgSize / 4)*sizeof(unsigned char));
+    st_BuffPtrs->uc_Original_V = (unsigned char *)malloc((i_ImgSize >>2)*sizeof(unsigned char));
 
     if (st_BuffPtrs->uc_Reconstructed_Y && st_BuffPtrs->uc_Reconstructed_U &&
         st_BuffPtrs->uc_Reconstructed_V && st_BuffPtrs->uc_Original_Y &&
         st_BuffPtrs->uc_Original_U && st_BuffPtrs->uc_Original_V)
     {
-        return 1;
+        return 0;
     }
     else
     {
-        return 0;
+        return 1;
     }
 }
 

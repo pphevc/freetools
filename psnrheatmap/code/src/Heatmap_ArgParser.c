@@ -35,10 +35,10 @@
 ******************************************************************************/
 int ParseCommandArgs(int argc, char *argv[], InputParams *st_InputParams)
 {
-    if (argc<12)
+    if (argc<13)
     {
         printf("Insufficient argument provided\n");
-        return 0;
+        return 1;
     }
     int i_cmdIterator;
     for (i_cmdIterator = 1; i_cmdIterator<argc; i_cmdIterator++)
@@ -48,36 +48,42 @@ int ParseCommandArgs(int argc, char *argv[], InputParams *st_InputParams)
             switch (*(++argv[i_cmdIterator]))
             {
             case 'r':
+            case 'R':
                 strcpy(st_InputParams->c_InputRef, (argv[++i_cmdIterator]));
                 break;
 
             case 'o':
+            case 'O':
               strcpy(st_InputParams->c_InputOriginal, (argv[++i_cmdIterator]));
                 break;
 
             case 'w':
+            case 'W':
                 st_InputParams->i_ImgWidth = atoi(argv[++i_cmdIterator]);
                 break;
 
             case 'h':
+            case 'H':
                 st_InputParams->i_ImgHeight = atoi(argv[++i_cmdIterator]);
                 break;
 
             case 'f':
+            case 'F':
                 st_InputParams->i_NoOfFrames = atoi(argv[++i_cmdIterator]);
                 if (st_InputParams->i_NoOfFrames<1)
                 {
                     printf("Number of frames must be greater than 1\n");
-                    return 0;
+                    return 1;
                 }
                 break;
 
             case 'b':
+            case 'B':
                 st_InputParams->i_BlkSize = atoi(argv[++i_cmdIterator]);
                 if (st_InputParams->i_BlkSize < 2 || (st_InputParams->i_BlkSize % 2) != 0)
                 {
                     printf("Block size sholud be 2xN ( NOTE : N!=0 )\n");
-                    return 0;
+                    return 1;
                 }
                 break;
 
@@ -89,11 +95,11 @@ int ParseCommandArgs(int argc, char *argv[], InputParams *st_InputParams)
                 printf("-h Height of file\n");
                 printf("-f Number of frames\n");
                 printf("-b block size(Even number)\n");
-                printf("Example PP_HeatMap.exe -r Reconstructed_file.yuv -o Original_file.yuv -w 1920 -h 1080 -f 99 -b 16\n");
-                return 0;
+                printf("Example HeatMap.exe -r Reconstructed_file.yuv -o Original_file.yuv -w 1920 -h 1080 -f 99 -b 16\n");
+                return 1;
             }
             }
         }
     }
-    return 1;
+    return 0;
 }
